@@ -1,0 +1,21 @@
+{
+  "name": "swf-worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-swf": "^4.1.0",
+    "bluebird": "^2.9.33",
+    "moment": "^2.10.3",
+    "underscore": "^1.8.3",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}

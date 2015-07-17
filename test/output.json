@@ -1,0 +1,238 @@
+{
+    "config": {
+        "events": [
+            {
+                "eventId": 1,
+                "eventTimestamp": "2015-07-14T02:39:17.767Z",
+                "eventType": "WorkflowExecutionStarted",
+                "workflowExecutionStartedEventAttributes": {
+                    "childPolicy": "TERMINATE",
+                    "executionStartToCloseTimeout": "1800",
+                    "input": "INPUT DATA",
+                    "parentInitiatedEventId": 0,
+                    "taskList": {
+                        "name": "test-tasks4"
+                    },
+                    "taskStartToCloseTimeout": "1800",
+                    "workflowType": {
+                        "name": "Test Workflow",
+                        "version": "0.1"
+                    }
+                }
+            },
+            {
+                "decisionTaskScheduledEventAttributes": {
+                    "startToCloseTimeout": "1800",
+                    "taskList": {
+                        "name": "test-tasks4"
+                    }
+                },
+                "eventId": 2,
+                "eventTimestamp": "2015-07-14T02:39:17.767Z",
+                "eventType": "DecisionTaskScheduled"
+            },
+            {
+                "decisionTaskStartedEventAttributes": {
+                    "identity": "mySwfDecider",
+                    "scheduledEventId": 2
+                },
+                "eventId": 3,
+                "eventTimestamp": "2015-07-14T02:39:17.854Z",
+                "eventType": "DecisionTaskStarted"
+            },
+            {
+                "decisionTaskCompletedEventAttributes": {
+                    "scheduledEventId": 2,
+                    "startedEventId": 3
+                },
+                "eventId": 4,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "DecisionTaskCompleted"
+            },
+            {
+                "eventId": 5,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "ScheduleActivityTaskFailed",
+                "scheduleActivityTaskFailedEventAttributes": {
+                    "activityId": "createOffer",
+                    "activityType": {
+                        "name": "RoundRobinOffer",
+                        "version": "1.0"
+                    },
+                    "cause": "ACTIVITY_TYPE_DOES_NOT_EXIST",
+                    "decisionTaskCompletedEventId": 4
+                }
+            },
+            {
+                "decisionTaskScheduledEventAttributes": {
+                    "startToCloseTimeout": "1800",
+                    "taskList": {
+                        "name": "test-tasks4"
+                    }
+                },
+                "eventId": 6,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "DecisionTaskScheduled"
+            },
+            {
+                "decisionTaskStartedEventAttributes": {
+                    "identity": "mySwfDecider",
+                    "scheduledEventId": 6
+                },
+                "eventId": 7,
+                "eventTimestamp": "2015-07-14T02:39:18.128Z",
+                "eventType": "DecisionTaskStarted"
+            }
+        ],
+        "previousStartedEventId": 3,
+        "startedEventId": 7,
+        "taskToken": "AAAAKgAAAAIAAAAAAAAAAun/Gkga3j5CeOypgcjP1dGQzI0/qNVP5VuFuZWRbyi4CNYvqCcTLPogsbPZWzUSuhaWH9Nqjk8zEwND7ahYNwGT1sxl7zpYhoUBQCnCKFHFGXp7nxJHYfTqyx22+WzMwBaA0XA2lQWmHZRAJjRXA3kTYmuB1SU3amPmfwD7Kk2/s43fU44tGaQ/LiiCBRJG0pK3OgjpT3FE1ieR/OljAK24GEaz9N5aAjzZSV95h8prT7OUCXVwmFQHsVVpmR3R1yGnkTfgkjkHUUm17x1Fh0PSggOBb1+XFQGHMyCMIkJ8",
+        "workflowExecution": {
+            "runId": "22OPnCdIvMp+H1O4hGEU/TupjW6fnwSHaiGN6zXBZByNs=",
+            "workflowId": "03005563630722463"
+        },
+        "workflowType": {
+            "name": "Test Workflow",
+            "version": "0.1"
+        }
+    },
+    "eventList": {
+        "_events": [
+            {
+                "decisionTaskStartedEventAttributes": {
+                    "identity": "mySwfDecider",
+                    "scheduledEventId": 6
+                },
+                "eventId": 7,
+                "eventTimestamp": "2015-07-14T02:39:18.128Z",
+                "eventType": "DecisionTaskStarted"
+            },
+            {
+                "decisionTaskScheduledEventAttributes": {
+                    "startToCloseTimeout": "1800",
+                    "taskList": {
+                        "name": "test-tasks4"
+                    }
+                },
+                "eventId": 6,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "DecisionTaskScheduled"
+            },
+            {
+                "eventId": 5,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "ScheduleActivityTaskFailed",
+                "scheduleActivityTaskFailedEventAttributes": {
+                    "activityId": "createOffer",
+                    "activityType": {
+                        "name": "RoundRobinOffer",
+                        "version": "1.0"
+                    },
+                    "cause": "ACTIVITY_TYPE_DOES_NOT_EXIST",
+                    "decisionTaskCompletedEventId": 4
+                }
+            },
+            {
+                "decisionTaskCompletedEventAttributes": {
+                    "scheduledEventId": 2,
+                    "startedEventId": 3
+                },
+                "eventId": 4,
+                "eventTimestamp": "2015-07-14T02:39:18.076Z",
+                "eventType": "DecisionTaskCompleted"
+            },
+            {
+                "decisionTaskStartedEventAttributes": {
+                    "identity": "mySwfDecider",
+                    "scheduledEventId": 2
+                },
+                "eventId": 3,
+                "eventTimestamp": "2015-07-14T02:39:17.854Z",
+                "eventType": "DecisionTaskStarted"
+            },
+            {
+                "decisionTaskScheduledEventAttributes": {
+                    "startToCloseTimeout": "1800",
+                    "taskList": {
+                        "name": "test-tasks4"
+                    }
+                },
+                "eventId": 2,
+                "eventTimestamp": "2015-07-14T02:39:17.767Z",
+                "eventType": "DecisionTaskScheduled"
+            },
+            {
+                "eventId": 1,
+                "eventTimestamp": "2015-07-14T02:39:17.767Z",
+                "eventType": "WorkflowExecutionStarted",
+                "workflowExecutionStartedEventAttributes": {
+                    "childPolicy": "TERMINATE",
+                    "executionStartToCloseTimeout": "1800",
+                    "input": "INPUT DATA",
+                    "parentInitiatedEventId": 0,
+                    "taskList": {
+                        "name": "test-tasks4"
+                    },
+                    "taskStartToCloseTimeout": "1800",
+                    "workflowType": {
+                        "name": "Test Workflow",
+                        "version": "0.1"
+                    }
+                }
+            }
+        ]
+    },
+    "response": {
+        "swfClient": {
+            "config": {
+                "credentials": {
+                    "expired": false,
+                    "expireTime": null,
+                    "accessKeyId": "AKIAIH7XH7RGD2OPC36Q"
+                },
+                "credentialProvider": {
+                    "providers": [
+                        null,
+                        null,
+                        null,
+                        null
+                    ]
+                },
+                "region": "us-east-1",
+                "logger": null,
+                "apiVersions": {},
+                "apiVersion": null,
+                "endpoint": "swf.us-east-1.amazonaws.com",
+                "httpOptions": {
+                    "timeout": 120000
+                },
+                "maxRedirects": 10,
+                "paramValidation": true,
+                "sslEnabled": true,
+                "s3ForcePathStyle": false,
+                "s3BucketEndpoint": false,
+                "computeChecksums": true,
+                "convertResponseTypes": true,
+                "dynamoDbCrc32": true,
+                "systemClockOffset": 0,
+                "signatureVersion": "v4"
+            },
+            "isGlobalEndpoint": false,
+            "endpoint": {
+                "protocol": "https:",
+                "host": "swf.us-east-1.amazonaws.com",
+                "port": 443,
+                "hostname": "swf.us-east-1.amazonaws.com",
+                "pathname": "/",
+                "path": "/",
+                "href": "https://swf.us-east-1.amazonaws.com/"
+            }
+        },
+        "taskToken": "AAAAKgAAAAIAAAAAAAAAAun/Gkga3j5CeOypgcjP1dGQzI0/qNVP5VuFuZWRbyi4CNYvqCcTLPogsbPZWzUSuhaWH9Nqjk8zEwND7ahYNwGT1sxl7zpYhoUBQCnCKFHFGXp7nxJHYfTqyx22+WzMwBaA0XA2lQWmHZRAJjRXA3kTYmuB1SU3amPmfwD7Kk2/s43fU44tGaQ/LiiCBRJG0pK3OgjpT3FE1ieR/OljAK24GEaz9N5aAjzZSV95h8prT7OUCXVwmFQHsVVpmR3R1yGnkTfgkjkHUUm17x1Fh0PSggOBb1+XFQGHMyCMIkJ8",
+        "defaultTaskList": {
+            "name": "test-tasks4"
+        },
+        "responseSent": true,
+        "decisions": null
+    }
+}
