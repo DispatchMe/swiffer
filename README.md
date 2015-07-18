@@ -198,6 +198,8 @@ Tasks are the elements inside of a Pipeline and the next step(s) in the workflow
 
 Currently there are two task types supported: **Activities** and **Timers**.
 
+**IMPORTANT**: no two tasks in the same "main" pipeline (IE, the pipeline passed to the `Decider` instance) can have the same name. The name is how swiffer determines the decisions for each decision task.
+
 ### Activity Tasks
 Activity tasks trigger the corresponding worker. They are made up of a `name`, `version`, and an optional **Retry Strategy**. See above examples for how to create an activity task.
 
