@@ -40,10 +40,10 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
 `npm install swiffer-framework`
 
 ## Support
-Please create an issue if you believe you have found a bug or are having trouble.
+Please create an issue if you believe you have found a bug or are having trouble. If you're able, please create a failing test for the bug you find so we can easily address it.
 
 ## Contributions
-Contributions are welcome. Please follow the guideines in `.jshintrc` and use `JSBeautify` before pushing.
+Contributions are welcome. Please follow the guideines in `.jshintrc` and use `JSBeautify` before pushing. Also, make sure your code is tested with `jasmine-node`.
 
 # Deciders
 Deciders are configured via Pipelines and Tasks.
@@ -178,7 +178,7 @@ var swf = require('swiffer-framework');
 var pipelines = swf.decider.Pipelines;
 var Task = swf.decider.Task;
 
-var myPipe = new pipelines.Continous([
+var myPipe = new pipelines.Continuous([
   new Task({
     type:'activity',
     name:'My Cool Activity',
