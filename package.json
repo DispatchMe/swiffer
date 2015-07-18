@@ -1,21 +1,22 @@
 {
-  "name": "swf-worker",
-  "version": "1.0.0",
-  "description": "",
+  "name": "swiffer-framework",
+  "version": "0.5.0",
+  "description": "This is a highly configurable, abstract NodeJS framework for Amazon's Simple Workflow Service (SWF)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/jasmine-node --captureExceptions ."
   },
-  "author": "",
+  "author": "Jason Raede <jason@dispatch.me>",
   "license": "ISC",
   "dependencies": {
-    "aws-swf": "^4.1.0",
     "bluebird": "^2.9.33",
+    "dot-component": "^0.1.1",
     "moment": "^2.10.3",
     "underscore": "^1.8.3",
     "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "aws-sdk": "^2.1.39",
     "jasmine-node": "^1.14.5"
   }
 }
