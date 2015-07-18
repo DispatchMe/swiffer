@@ -1,8 +1,14 @@
 This is a highly configurable, abstract NodeJS framework for Amazon's **Simple Workflow Service** (SWF). It allows you to configure your decisions through a combination of **Pipelines** and **Tasks** (see below), the end result being complete separation between your decider, your activity poller (worker), and the actual activities.
 
+# Table of Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
+- [Intro](#intro)
+  - [Installation](#installation)
+  - [Support](#support)
+  - [Contributions](#contributions)
 - [Deciders](#deciders)
   - [Basic Usage](#basic-usage)
   - [Pipelines](#pipelines)
@@ -20,10 +26,24 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
         - [None](#none)
     - [Timer Tasks](#timer-tasks)
       - [Dynamic Timer Delays](#dynamic-timer-delays)
+- [Workers](#workers)
+  - [Basic Usage](#basic-usage-1)
+  - [Worker Types](#worker-types)
+    - [Inline](#inline)
+    - [AWS Lambda](#aws-lambda)
+    - [Child Process](#child-process)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-There are two sides of this framework: the **Decider** and the **Worker**.
+# Intro
+## Installation
+`npm install swiffer-framework`
+
+## Support
+Please create an issue if you believe you have found a bug or are having trouble.
+
+## Contributions
+Contributions are welcome. Please follow the guideines in `.jshintrc` and use `JSBeautify` before pushing.
 
 # Deciders
 Deciders are configured via Pipelines and Tasks.
@@ -76,7 +96,7 @@ The below example does the following:
 
 ```javascript
 var swf = require('swiffer-framework');
-var pipelines = swf.decider.pipelines;
+var pipelines = swf.decider.Pipelines;
 var Task = swf.decider.Task;
 
 var myPipe = new pipelines.Series([
@@ -111,7 +131,7 @@ The below example does the following:
 
 ```javascript
 var swf = require('swiffer-framework');
-var pipelines = swf.decider.pipelines;
+var pipelines = swf.decider.Pipelines;
 var Task = swf.decider.Task;
 
 var myPipe = new pipelines.Series([
@@ -155,7 +175,7 @@ The below example does the following:
 
 ```javascript
 var swf = require('swiffer-framework');
-var pipelines = swf.decider.pipelines;
+var pipelines = swf.decider.Pipelines;
 var Task = swf.decider.Task;
 
 var myPipe = new pipelines.Continous([
@@ -240,7 +260,7 @@ var task = new swf.decider.Task({
   type:'activity',
   name:'My Cool Activity',
   activityVersion:'0.1',
-  retryStrategy:new swf.decider.retry.ExponentialBackoff(2, 5)
+  retryStrategy:new swf.decider.RetryStrategies.ExponentialBackoff(2, 5)
 });
 ```
 
@@ -254,7 +274,7 @@ var task = new swf.decider.Task({
   type:'activity',
   name:'My Cool Activity',
   activityVersion:'0.1',
-  retryStrategy:new swf.decider.retry.ConstantBackoff(30, 10)
+  retryStrategy:new swf.decider.RetryStrategies.ConstantBackoff(30, 10)
 });
 ```
 
@@ -268,7 +288,7 @@ var task = new swf.decider.Task({
   type:'activity',
   name:'My Cool Activity',
   activityVersion:'0.1',
-  retryStrategy:new swf.decider.retry.Immediate(5)
+  retryStrategy:new swf.decider.RetryStrategies.Immediate(5)
 });
 ```
 
@@ -300,3 +320,67 @@ Assuming the result of the "My Cool Activity" activity was something like:
 ```
 
 ...then the delay would be 45 seconds.
+
+# Workers
+Workers are the opposite side of the equation from the Deciders. They perform the activities scheduled by their corresponding Decider.
+
+## Basic Usage
+
+```javascript
+var swf = require('swiffer-framework'),
+  AWS = require('aws-sdk');
+
+
+var swfClient = new AWS.SWF({
+  region: 'us-east-1',
+  accessKeyId: '{ACCESS-KEY}',
+  secretAccessKey: '{SECRET-KEY}'
+});
+
+var worker = new swf.worker.Worker(swfClient, {
+  domain: 'Testing',
+  identity: 'test-worker',
+  taskList: {
+    name: 'MyWorkflow'
+  }
+});
+
+worker.registerResponder('Initialize', new swf.worker.Responders.Inline(function() {
+  var self = this;
+  this.heartbeat('Started!').then(function() {
+    return self.done({
+      id: '12345'
+    });
+  }).catch(self.error).done();
+}));
+
+worker.on('poll', function() {
+  console.log('Polling...');
+});
+
+worker.start();
+```
+
+## Worker Types
+
+### Inline
+The inline worker is simply a Javascript function that gets bound to the `Activity` object. Inline workers can call `this.heartbeat()` to register an SWF heartbeat, `this.error()` to signal an activity failure, and `this.done()` to signal that the activity completed successfully. See above for an example.
+
+### AWS Lambda
+This will allows you to defer the worker code to an AWS Lambda function. You must provide your own instance of `AWS.Lambda` from the `aws-sdk` library. For example, to call a Lambda function called "MyLambdaFunction", that responds to the "LambdaActivity" activity, you can do the following:
+
+```javascript
+var myLambdaClient = new AWS.Lambda({
+  region: 'us-east-1',
+  accessKeyId: '{ACCESS-KEY}',
+  secretAccessKey: '{SECRET-KEY}'
+});
+
+worker.registerResponder('LambdaActivity', new swf.workers.Responders.AWSLambda(myLambdaClient, 'MyLambdaFunction'));
+```
+
+### Child Process
+Coming soon. This is similar to the `Inline` worker type, but it will be spawned as a separate NodeJS process.
+
+
+
