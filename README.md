@@ -8,7 +8,7 @@ Deciders are configured via Pipelines and Tasks.
 ## Basic Usage
 
 ```javascript
-var swf = require('swiffer'),
+var swf = require('swiffer-framework'),
   AWS = require('aws-sdk');
 
 
