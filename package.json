@@ -7,7 +7,7 @@
     "test": "node_modules/.bin/jasmine-node --captureExceptions ."
   },
   "author": "Jason Raede <jason@dispatch.me>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.33",
     "dot-component": "^0.1.1",
