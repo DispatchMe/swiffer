@@ -1,6 +1,7 @@
+This is a highly configurable, abstract NodeJS framework for Amazon's **Simple Workflow Service** (SWF). It allows you to configure your decisions through a combination of **Pipelines** and **Tasks** (see below), the end result being complete separation between your decider, your activity poller (worker), and the actual activities.
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Deciders](#deciders)
   - [Basic Usage](#basic-usage)
@@ -21,8 +22,6 @@
       - [Dynamic Timer Delays](#dynamic-timer-delays)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-This is a highly configurable, abstract NodeJS framework for Amazon's **Simple Workflow Service** (SWF). It allows you to configure your decisions through a combination of **Pipelines** and **Tasks** (see below), the end result being complete separation between your decider, your activity poller (worker), and the actual activities.
 
 There are two sides of this framework: the **Decider** and the **Worker**.
 
