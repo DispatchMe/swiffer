@@ -367,12 +367,11 @@ var worker = new swf.worker.Worker(swfClient, {
 });
 
 worker.registerResponder('Initialize', new swf.worker.Responders.Inline(function() {
-  var self = this;
-  this.heartbeat('Started!').then(function() {
-    return self.done({
-      id: '12345'
-    });
-  }).catch(self.error).done();
+  this.heartbeat('Started!');
+
+  this.done({
+    id:'12345'
+  });
 }));
 
 worker.on('poll', function() {
@@ -386,6 +385,8 @@ worker.start();
 
 ### Inline
 The inline worker is simply a Javascript function that gets bound to the `Activity` object. Inline workers can call `this.heartbeat()` to register an SWF heartbeat, `this.error()` to signal an activity failure, and `this.done()` to signal that the activity completed successfully. See above for an example.
+
+Note that `heartbeat()`, `error()`, and `done()` are wrapped in `Futures` from [laverdet/node-fibers](https://github.com/laverdet/node-fibers). This allows you to call them and wait for an acknowledgement from SWF without needing messy asynchronous code.
 
 ### AWS Lambda
 This will allows you to defer the worker code to an AWS Lambda function. You must provide your own instance of `AWS.Lambda` from the `aws-sdk` library. For example, to call a Lambda function called "MyLambdaFunction", that responds to the "LambdaActivity" activity, you can do the following:
