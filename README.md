@@ -218,6 +218,8 @@ var task = new swf.decider.Task({
 ```
 
 ##### Dynamic Task Input
+
+###### From previous activity
 To modify the input based on the results of the most recently completed "My Initial Activity" activity, do the following (the "$" is used to designate that it is a dynamic value):
 
 ```javascript
@@ -246,6 +248,19 @@ Assuming the result of the "My Initial Activity" activity was something like:
 {
   "foo":"asdf1234"
 }
+```
+
+###### From workflow execution
+To modify the input based on the initial input passed to the workflow, do the same as above, but substitute `$$Workflow` for the key:
+
+```javascript
+var task = new swf.decider.Task({
+  type:'activity',
+  name:'My Cool Activity',
+  input:{
+    foo:'$$Workflow.someProperty.myFoo'
+  }
+});
 ```
 
 #### Timeout Configuration
