@@ -419,7 +419,7 @@ var myLambdaClient = new AWS.Lambda({
   secretAccessKey: '{SECRET-KEY}'
 });
 
-worker.register('LambdaActivity', new swf.workers.Types.AWSLambda(myLambdaClient, 'MyLambdaFunction'));
+worker.register('LambdaActivity', new swf.worker.Types.AWSLambda(myLambdaClient, 'MyLambdaFunction'));
 ```
 
 ### Child Process
