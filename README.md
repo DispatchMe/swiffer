@@ -39,6 +39,9 @@ This is a highly configurable, abstract NodeJS framework for Amazon's [Simple Wo
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Preamble
+## Disclaimer
+This project is still in active development. As such, the API is subject to change. We will stick to the typical major/minor/patch versioning system, in which any breaking API changes will bump the major version.
+
 ## Installation
 `npm install swiffer-framework`
 

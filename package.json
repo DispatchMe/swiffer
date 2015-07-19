@@ -1,6 +1,6 @@
 {
   "name": "swiffer-framework",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "This is a highly configurable, abstract NodeJS framework for Amazon's Simple Workflow Service (SWF)",
   "main": "index.js",
   "scripts": {
