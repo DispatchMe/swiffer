@@ -1,11 +1,11 @@
-This is a highly configurable, abstract NodeJS framework for Amazon's **Simple Workflow Service** (SWF). It allows you to configure your decisions through a combination of **Pipelines** and **Tasks** (see below), the end result being complete separation between your decider, your activity poller (worker), and the actual activities.
+This is a highly configurable, abstract NodeJS framework for Amazon's [Simple Workflow Service](http://aws.amazon.com/documentation/swf/) (SWF). It allows you to configure your decisions through a combination of **Pipelines** and **Tasks** (see below), the end result being complete separation between your decider, your activity poller (worker), and the actual activities.
 
 # Table of Contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Intro](#intro)
+- [Preamble](#preamble)
   - [Installation](#installation)
   - [Support](#support)
   - [Contributions](#contributions)
@@ -19,6 +19,9 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
     - [Activity Tasks](#activity-tasks)
       - [Task Input](#task-input)
         - [Dynamic Task Input](#dynamic-task-input)
+          - [From previous activity](#from-previous-activity)
+          - [From workflow execution](#from-workflow-execution)
+      - [Timeout Configuration](#timeout-configuration)
       - [Retry Strategies](#retry-strategies)
         - [Exponential Backoff](#exponential-backoff)
         - [Constant Backoff](#constant-backoff)
@@ -26,7 +29,7 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
         - [None](#none)
     - [Timer Tasks](#timer-tasks)
       - [Dynamic Timer Delays](#dynamic-timer-delays)
-- [Workers](#workers)
+- [Activity Workers](#activity-workers)
   - [Basic Usage](#basic-usage-1)
   - [Worker Types](#worker-types)
     - [Inline](#inline)
@@ -35,7 +38,7 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Intro
+# Preamble
 ## Installation
 `npm install swiffer-framework`
 
@@ -43,7 +46,7 @@ This is a highly configurable, abstract NodeJS framework for Amazon's **Simple W
 Please create an issue if you believe you have found a bug or are having trouble. If you're able, please create a failing test for the bug you find so we can easily address it.
 
 ## Contributions
-Contributions are welcome. Please follow the guideines in `.jshintrc` and use `JSBeautify` before pushing. Also, make sure your code is tested with `jasmine-node`.
+Contributions are welcome. Please follow the guideines in `.jshintrc` and use [JSBeautify](https://github.com/beautify-web/js-beautify) before pushing. Also, make sure your code is tested with [jasmine-node](https://github.com/mhevery/jasmine-node)
 
 # Deciders
 Deciders are configured via Pipelines and Tasks.
@@ -164,7 +167,7 @@ var myPipe = new pipelines.Series([
 ```
 
 ### Continuous Pipeline
-A Continuous pipeline is a Series pipeline that starts over if all of its tasks have completed successfully. It will keep running indefinitely unless you tell it to stop with a **Signal**.
+A Continuous pipeline is a Series pipeline that starts over if all of its tasks have completed successfully. It will keep running indefinitely unless you tell it to stop with a [Signal](http://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-adv.html#swf-dev-adv-signals).
 
 The below example does the following:
 
@@ -264,7 +267,7 @@ var task = new swf.decider.Task({
 ```
 
 #### Timeout Configuration
-SWF allows you to configure four different timeouts: `scheduleToStartTimeout`, `scheduleToCloseTimeout`, `startToCloseTimeout`, and `heartbeatTimeout`. You can provide these timeouts via your task configuration like so:
+SWF allows you to configure four different [timeouts](http://docs.aws.amazon.com/amazonswf/latest/apireference/API_ScheduleActivityTaskDecisionAttributes.html): `scheduleToStartTimeout`, `scheduleToCloseTimeout`, `startToCloseTimeout`, and `heartbeatTimeout`. You can provide these timeouts via your task configuration like so:
 
 ```javascript
 var task = new swf.decider.Task({
@@ -357,8 +360,8 @@ Assuming the result of the "My Cool Activity" activity was something like:
 
 ...then the delay would be 45 seconds.
 
-# Workers
-Workers are the opposite side of the equation from the Deciders. They perform the activities scheduled by their corresponding Decider.
+# Activity Workers
+[Activity workers](http://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-actors.html#swf-dev-actors-activities) are the opposite side of the equation from the Deciders. They perform the activities scheduled by their corresponding Decider.
 
 ## Basic Usage
 
@@ -381,7 +384,7 @@ var worker = new swf.worker.Worker(swfClient, {
   }
 });
 
-worker.registerResponder('Initialize', new swf.worker.Responders.Inline(function() {
+worker.register('Initialize', new swf.worker.Types.Inline(function() {
   this.heartbeat('Started!');
 
   this.done({
@@ -404,7 +407,7 @@ The inline worker is simply a Javascript function that gets bound to the `Activi
 Note that `heartbeat()`, `error()`, and `done()` are wrapped in `Futures` from [laverdet/node-fibers](https://github.com/laverdet/node-fibers). This allows you to call them and wait for an acknowledgement from SWF without needing messy asynchronous code.
 
 ### AWS Lambda
-This will allows you to defer the worker code to an AWS Lambda function. You must provide your own instance of `AWS.Lambda` from the `aws-sdk` library. For example, to call a Lambda function called "MyLambdaFunction", that responds to the "LambdaActivity" activity, you can do the following:
+This will allows you to defer the worker code to an AWS Lambda function. You must provide your own instance of `AWS.Lambda` from the [aws-sdk](https://github.com/aws/aws-sdk-js) library. For example, to call a Lambda function called "MyLambdaFunction", that responds to the "LambdaActivity" activity, you can do the following:
 
 ```javascript
 var myLambdaClient = new AWS.Lambda({
@@ -413,11 +416,11 @@ var myLambdaClient = new AWS.Lambda({
   secretAccessKey: '{SECRET-KEY}'
 });
 
-worker.registerResponder('LambdaActivity', new swf.workers.Responders.AWSLambda(myLambdaClient, 'MyLambdaFunction'));
+worker.register('LambdaActivity', new swf.workers.Types.AWSLambda(myLambdaClient, 'MyLambdaFunction'));
 ```
 
 ### Child Process
-Coming soon. This is similar to the `Inline` worker type, but it will be spawned as a separate NodeJS process.
+Coming soon. Will allow you to spawn an arbitrary shell process.
 
 
 
