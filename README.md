@@ -226,6 +226,7 @@ var task = new swf.decider.Task({
   name:'My Cool Activity',
   input:{
     foo:'$My Initial Activity.someProperty.myFoo'
+  }
 });
 ```
 
@@ -246,6 +247,24 @@ Assuming the result of the "My Initial Activity" activity was something like:
   "foo":"asdf1234"
 }
 ```
+
+#### Timeout Configuration
+SWF allows you to configure four different timeouts: `scheduleToStartTimeout`, `scheduleToCloseTimeout`, `startToCloseTimeout`, and `heartbeatTimeout`. You can provide these timeouts via your task configuration like so:
+
+```javascript
+var task = new swf.decider.Task({
+  type:'activity',
+  name:'My Cool Activity',
+  timeouts:{
+    scheduleToStart:30,
+    scheduleToClose:300,
+    startToClose:360,
+    heartbeat:30
+  }
+});
+```
+
+They default to `60`, `360`, `300`, and `60`, respectively, if you do not set them.
 
 
 #### Retry Strategies

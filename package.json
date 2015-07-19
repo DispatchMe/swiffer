@@ -17,6 +17,9 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.1.39",
+    "gulp": "^3.9.0",
+    "gulp-coverage": "^0.3.36",
+    "gulp-jasmine": "^2.0.1",
     "jasmine-node": "^1.14.5"
   }
 }
