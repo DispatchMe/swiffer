@@ -164,7 +164,7 @@ var myPipe = new pipelines.Series([
 ```
 
 ### Continuous Pipeline
-A Continuous pipeline is a Series pipeline that starts over if all of its tasks have completed successfully. It will keep running infinitely unless you tell it to stop with a **Signal**.
+A Continuous pipeline is a Series pipeline that starts over if all of its tasks have completed successfully. It will keep running indefinitely unless you tell it to stop with a **Signal**.
 
 The below example does the following:
 
@@ -188,7 +188,7 @@ var myPipe = new pipelines.Continuous([
   new Task({
     type:'timer',
     name:'My Timer',
-    delay:10
+    delay:60
   })
 ]).breakOnSignal('StopMyActivity');
 ```
