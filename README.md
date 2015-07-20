@@ -6,15 +6,22 @@ This is a highly configurable, abstract NodeJS framework for Amazon's [Simple Wo
 
 
 - [Preamble](#preamble)
+  - [Disclaimer](#disclaimer)
   - [Installation](#installation)
   - [Support](#support)
   - [Contributions](#contributions)
 - [Deciders](#deciders)
   - [Basic Usage](#basic-usage)
   - [Pipelines](#pipelines)
-    - [Series Pipeline](#series-pipeline)
-    - [Parallel Pipeline](#parallel-pipeline)
-    - [Continuous Pipeline](#continuous-pipeline)
+    - [Pipeline Types](#pipeline-types)
+      - [Series Pipeline](#series-pipeline)
+      - [Parallel Pipeline](#parallel-pipeline)
+      - [Continuous Pipeline](#continuous-pipeline)
+    - [Signaling Pipelines](#signaling-pipelines)
+      - [Important Notes](#important-notes)
+      - [Signaling Series Pipelines](#signaling-series-pipelines)
+      - [Signaling Parallel Pipelines](#signaling-parallel-pipelines)
+      - [Signaling Continuous Pipelines](#signaling-continuous-pipelines)
   - [Tasks](#tasks)
     - [Activity Tasks](#activity-tasks)
       - [Task Input](#task-input)
@@ -89,9 +96,10 @@ decider.start();
 ## Pipelines
 A pipeline is a collection of one or more tasks or child pipelines. Once all tasks in the main pipeline passed to the Decider have completed successfully, the workflow is marked as complete.
 
+### Pipeline Types
 There are three types of pipeline:
 
-### Series Pipeline
+#### Series Pipeline
 This pipeline executes all of its tasks in sequential order. 
 
 The below example does the following:
@@ -126,7 +134,7 @@ var myPipe = new pipelines.Series([
 ]);
 ```
 
-### Parallel Pipeline
+#### Parallel Pipeline
 This executes all of its tasks at the same time. It is most useful as a child in a Series pipeline.
 
 The below example does the following:
@@ -169,7 +177,7 @@ var myPipe = new pipelines.Series([
 ]);
 ```
 
-### Continuous Pipeline
+#### Continuous Pipeline
 A Continuous pipeline is a Series pipeline that starts over if all of its tasks have completed successfully. It will keep running indefinitely unless you tell it to stop with a [Signal](http://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-adv.html#swf-dev-adv-signals).
 
 The below example does the following:
@@ -196,8 +204,50 @@ var myPipe = new pipelines.Continuous([
     name:'My Timer',
     delay:60
   })
-]).breakOnSignal('StopMyActivity');
+]).onSignal('StopMyActivity', 'break');
 ```
+
+### Signaling Pipelines
+All pipelines can react to a signal and start either a single task or a child pipeline.
+
+For example, if you want a Series pipeline to wait an hour if it receives the `"WaitOneHour"` signal, you would do the following:
+
+```javascript
+var myPipe = new pipelines.Series([
+  new Task({
+    type:'activity',
+    name:'Activity1',
+    activityVersion:'0.1'
+  }),
+  new Task({
+    type:'activity',
+    name:'Activity2',
+    activityVersion:'0.1'
+  }),
+  new Task({
+    type:'activity',
+    name:'Activity3',
+    activityVersion:'0.1'
+  })
+]).onSignal('WaitOneHour', new Task({
+  type:'timer',
+  name:'OneHourTimer',
+  delay:3600
+}));
+```
+
+#### Important Notes
+1. Different pipeline types respond to signals a bit differently. See below.
+2. If a workflow has already received a signal one or more times, and receives that signal again, and the task/pipeline triggered by the previous signal has not yet completed, then the most recent signal will be **ignored**.
+
+#### Signaling Series Pipelines
+When a Series pipeline receives a signal, it will not execute any normal task in the pipe until the signal has been handled. If it receives multiple signals at the same time, those signals will be handled in parallel, but the Series pipeline will not continue its normal execution until all signals have been handled.
+
+#### Signaling Parallel Pipelines
+When a Parallel pipeline receives a signal, it will both respond to the signal AND continue its normal execution.
+
+#### Signaling Continuous Pipelines
+Continuous pipelines react the same way as Series pipelines do to signals. However, you can also set a signal on which to *break* the continuous loop. See examples for Continuous pipeline configuration above.
 
 ## Tasks
 Tasks are the elements inside of a Pipeline and the next step(s) in the workflow.

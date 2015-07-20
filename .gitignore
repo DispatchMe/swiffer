@@ -6,3 +6,4 @@ node_modules
 /.coverdata
 /reports
 /debug
+/output.json
