@@ -413,6 +413,20 @@ Assuming the result of the "My Cool Activity" activity was something like:
 
 ...then the delay would be 45 seconds.
 
+## Child Workflow Tasks
+You can trigger a child workflow from within a parent workflow. For all intents and purposes, the child workflow is the same as an activity task (see above). It will be considered "done" when the entire child workflow has finished, and uses retry strategies in the same manner that activity tasks do. Note that in case you want to trigger the same child workflow in multiple parts of your pipeline, the `name` property (which must be unique so swiffer can identify related tasks) is separate from the `workflowName` property, which is the name of the workflow in SWF.
+
+Example:
+
+```javascript
+var task = new swf.decider.Task({
+  type:'childWorkflow',
+  name:'MyChildWorkflow',
+  workflowName:'name of my child workflow',
+  workflowVersion:'1.0'
+});
+```
+
 # Activity Workers
 [Activity workers](http://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-actors.html#swf-dev-actors-activities) are the opposite side of the equation from the Deciders. They perform the activities scheduled by their corresponding Decider.
 
