@@ -252,7 +252,7 @@ Continuous pipelines react the same way as Series pipelines do to signals. Howev
 ## Tasks
 Tasks are the elements inside of a Pipeline and the next step(s) in the workflow.
 
-Currently there are two task types supported: **Activities** and **Timers**.
+Currently there are four task types supported: **Activities**, **Timers**, **Lambda Functions**, and **Markers**.
 
 **IMPORTANT**: no two tasks in the same "main" pipeline (IE, the pipeline passed to the `Decider` instance) can have the same name. The name is how swiffer determines the decisions for each decision task.
 
@@ -412,6 +412,43 @@ Assuming the result of the "My Cool Activity" activity was something like:
 ```
 
 ...then the delay would be 45 seconds.
+
+### Lambda Function Tasks
+
+Lambda function tasks trigger an AWS lambda function.  They invoke the lambda function specified by `functionName`, a distinct `name`, and an optional *Retry Strategy*.
+
+#### Lambda Task Input
+
+You can give either static or dynamic input (or no input) to your lambda function task.  Simply define the `input` property in the task configuration, just like you would with the activity task input:
+
+```javascript
+var task = new swf.decider.Task({
+  type: 'lambda',
+  name: 'Neato Lambda Function Activity',
+  functionName: 'MyLambdaFunction',
+  input: {
+    foo: 'bar'
+  }
+});
+```
+
+
+### Marker Tasks
+
+Marker tasks record information in the workflow, which can be used for debugging purposes or for capturing the workflow state.
+
+#### Marker Task Details
+
+You can give either static or dynamic details (or no details) to your marker task.  Simply define the `details` property in the task configuration, just like you would with the activity task input:
+
+```javascript
+var task = new swf.decider.Task({
+  type: 'marker',
+  name: 'Workflow Delay Time',
+  details: '$My Cool Activity.someProperty.timerDelay'
+});
+```
+
 
 ## Child Workflow Tasks
 You can trigger a child workflow from within a parent workflow. For all intents and purposes, the child workflow is the same as an activity task (see above). It will be considered "done" when the entire child workflow has finished, and uses retry strategies in the same manner that activity tasks do. Note that in case you want to trigger the same child workflow in multiple parts of your pipeline, the `name` property (which must be unique so swiffer can identify related tasks) is separate from the `workflowName` property, which is the name of the workflow in SWF.
