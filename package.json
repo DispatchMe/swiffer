@@ -1,10 +1,10 @@
 {
   "name": "swiffer-framework",
-  "version": "0.7.0",
-  "description": "This is a highly configurable, abstract NodeJS framework for Amazon's Simple Workflow Service (SWF)",
+  "version": "0.8.0",
+  "description": "A highly configurable, abstract NodeJS framework for Amazon's Simple Workflow Service (SWF)",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/jasmine-node --captureExceptions ."
+    "test": "jasmine-node --captureExceptions ."
   },
   "author": "Jason Raede <jason@dispatch.me>",
   "license": "MIT",

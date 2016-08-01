@@ -58,6 +58,13 @@ Please create an issue if you believe you have found a bug or are having trouble
 ## Contributions
 Contributions are welcome. Please follow the guideines in `.jshintrc` and use [JSBeautify](https://github.com/beautify-web/js-beautify) before pushing. Also, make sure your code is tested with [jasmine-node](https://github.com/mhevery/jasmine-node)
 
+# How This Works In A Nutshell
+
+- This package exports `decider` and `worker`.
+- You will use these to create deciders and workers, both of which will be connected with AWS SWF.
+- You will run your deciders and workers as NodeJS apps anywhere, for example as microservices on your own infrastructure.
+- SWF, when given input, will call your deciders to decide what to do and then call your workers to actually do it.
+
 # Deciders
 Deciders are configured via Pipelines and Tasks.
 
@@ -100,7 +107,7 @@ A pipeline is a collection of one or more tasks or child pipelines. Once all tas
 There are three types of pipeline:
 
 #### Series Pipeline
-This pipeline executes all of its tasks in sequential order. 
+This pipeline executes all of its tasks in sequential order.
 
 The below example does the following:
 

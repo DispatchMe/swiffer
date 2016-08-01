@@ -1,4 +1,5 @@
 node_modules
+npm-debug.log
 /decider.js
 /worker.js
 /start.js
